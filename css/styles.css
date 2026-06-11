@@ -183,34 +183,48 @@ footer .legal { border-top: 1px solid rgba(255,255,255,0.15); padding-top: 18px;
   /* Top bar: stack and center */
   .topbar .container { flex-direction: column; align-items: center; text-align: center; gap: 2px; font-size: 0.82rem; }
 
-  /* Units table becomes stacked cards */
+  /* Units table becomes clean stacked cards */
   .units-table-wrap { overflow-x: visible; box-shadow: none; border-radius: 0; }
-  table.units { min-width: 0; background: transparent; }
+  table.units { min-width: 0; background: transparent; border-collapse: separate; }
   table.units thead { display: none; }
-  table.units, table.units tbody, table.units tr, table.units td { display: block; width: 100%; }
+  table.units, table.units tbody { display: block; width: 100%; }
   table.units tr {
+    display: flex; flex-direction: column; width: 100%;
     background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
-    box-shadow: var(--shadow); margin-bottom: 14px; padding: 6px 0;
+    box-shadow: var(--shadow); margin-bottom: 16px; overflow: hidden;
   }
-  table.units td {
-    display: flex; justify-content: space-between; align-items: center; gap: 12px;
-    padding: 9px 16px; border-bottom: 1px solid var(--blue-light); text-align: right;
-  }
-  table.units td::before {
-    content: attr(data-label);
-    font-weight: 700; color: var(--gray); font-size: 0.82rem;
-    text-transform: uppercase; letter-spacing: 0.4px; text-align: left; flex-shrink: 0;
-  }
+  table.units td { display: block; width: 100%; border: 0; padding: 0 18px; text-align: center; box-sizing: border-box; }
+  table.units td::before { content: none; }
+
+  /* Card header: unit size + status side by side */
   table.units td[data-label="Unit Size"] {
-    background: var(--blue-dark); color: #fff; border-radius: var(--radius) var(--radius) 0 0;
-    margin-top: -6px; font-size: 1.05rem; padding: 12px 16px;
+    order: 1;
+    background: var(--blue-dark); color: #fff;
+    font-size: 1.1rem; padding: 13px 18px; text-align: left;
   }
-  table.units td[data-label="Unit Size"]::before { content: none; }
-  table.units td[data-label="Unit Size"] strong { width: 100%; text-align: left; }
   table.units td[data-label="Unit Size"] a { color: #fff; }
-  table.units td[data-label="Action"] { border-bottom: 0; padding: 12px 16px 10px; }
-  table.units td[data-label="Action"]::before { content: none; }
-  table.units td[data-label="Action"] .btn { width: 100%; }
+  table.units td[data-label="Status"] {
+    order: 2; padding: 14px 18px 0;
+  }
+  table.units td[data-label="Status"] .tag { font-size: 0.8rem; padding: 5px 14px; }
+
+  /* Big price */
+  table.units td[data-label="Monthly Rate"] {
+    order: 3; font-size: 2.1rem; font-weight: 800; color: var(--blue-dark);
+    padding-top: 6px; line-height: 1.1;
+  }
+  table.units td[data-label="Monthly Rate"]::after {
+    content: " /month"; font-size: 0.95rem; font-weight: 600; color: var(--gray);
+  }
+
+  /* Description */
+  table.units td[data-label="Best For"] {
+    order: 4; color: var(--gray); font-size: 0.93rem; padding-top: 6px; line-height: 1.45;
+  }
+
+  /* Button */
+  table.units td[data-label="Action"] { order: 5; padding: 14px 18px 18px; }
+  table.units td[data-label="Action"] .btn { width: 100%; padding: 13px 0; font-size: 0.95rem; }
   .nav-toggle { display: block; }
   nav.main-nav {
     display: none; position: absolute; top: 100%; left: 0; right: 0;
