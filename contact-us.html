@@ -63,11 +63,13 @@
           <p>🕐 Gate access: 24/7 for tenants</p>
 
           <h3 style="margin-top:28px;">Send a Message</h3>
-          <form action="mailto:wi64selfstorage@gmail.com" method="get" style="display:grid;gap:12px;max-width:440px;">
+          <form action="https://formspree.io/f/mkoaqoya" method="POST" style="display:grid;gap:12px;max-width:440px;">
+            <input type="hidden" name="_subject" value="New message from pleasantlakestorage.com">
             <input type="text" name="name" placeholder="Full Name" required style="padding:12px;border:1px solid var(--line);border-radius:8px;font-size:1rem;">
             <input type="email" name="email" placeholder="Email Address" required style="padding:12px;border:1px solid var(--line);border-radius:8px;font-size:1rem;">
             <input type="tel" name="phone" placeholder="Phone Number" style="padding:12px;border:1px solid var(--line);border-radius:8px;font-size:1rem;">
-            <textarea name="body" rows="4" placeholder="Your message — e.g. 'Add me to the waitlist for a 10x20'" required style="padding:12px;border:1px solid var(--line);border-radius:8px;font-size:1rem;font-family:inherit;"></textarea>
+            <textarea name="message" rows="4" placeholder="Your message — e.g. 'Add me to the waitlist for a 10x20'" required style="padding:12px;border:1px solid var(--line);border-radius:8px;font-size:1rem;font-family:inherit;"></textarea>
+            <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
             <button type="submit" class="btn btn-primary" style="border:0;cursor:pointer;">Send Message</button>
           </form>
           <p style="margin-top:10px;font-size:0.85rem;">Prefer email? Write us directly at <a href="mailto:wi64selfstorage@gmail.com">wi64selfstorage@gmail.com</a>.</p>

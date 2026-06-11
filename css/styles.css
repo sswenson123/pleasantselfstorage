@@ -60,7 +60,7 @@ nav.main-nav a:hover { color: var(--blue); }
 .btn-blue:hover { background: var(--blue-dark); }
 .btn-outline { border: 2px solid var(--blue); color: var(--blue) !important; }
 .btn-outline:hover { background: var(--blue-light); }
-.nav-toggle { display: none; background: none; border: 0; font-size: 1.6rem; cursor: pointer; color: var(--ink); }
+.nav-toggle { display: none; background: none; border: 0; font-size: 1.6rem; cursor: pointer; color: var(--ink); margin-right: 14px; padding: 4px 8px; }
 
 /* ---------- Hero ---------- */
 .hero {
@@ -203,6 +203,16 @@ footer .legal { border-top: 1px solid rgba(255,255,255,0.15); padding-top: 18px;
     font-size: 1.1rem; padding: 13px 18px; text-align: left;
   }
   table.units td[data-label="Unit Size"] a { color: #fff; }
+
+  /* Color-coding: available = green, waitlist = slate gray */
+  table.units tr.row-avail { border: 2px solid var(--green); }
+  table.units tr.row-avail td[data-label="Unit Size"] { background: var(--green); }
+  table.units tr.row-avail td[data-label="Monthly Rate"] { color: var(--green); }
+  table.units tr.row-avail td[data-label="Action"] .btn { background: var(--green); color: #fff !important; border: 0; }
+  table.units tr.row-wait { background: #f5f7fa; border-color: #cfd8e0; }
+  table.units tr.row-wait td[data-label="Unit Size"] { background: #5b6b7a; }
+  table.units tr.row-wait td[data-label="Monthly Rate"] { color: #5b6b7a; }
+  table.units tr.row-wait td[data-label="Action"] .btn { border-color: #5b6b7a; color: #5b6b7a !important; background: transparent; }
   table.units td[data-label="Status"] {
     order: 2; padding: 14px 18px 0;
   }
