@@ -180,6 +180,37 @@ footer .legal { border-top: 1px solid rgba(255,255,255,0.15); padding-top: 18px;
   .contact-grid, footer .footer-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 720px) {
+  /* Top bar: stack and center */
+  .topbar .container { flex-direction: column; align-items: center; text-align: center; gap: 2px; font-size: 0.82rem; }
+
+  /* Units table becomes stacked cards */
+  .units-table-wrap { overflow-x: visible; box-shadow: none; border-radius: 0; }
+  table.units { min-width: 0; background: transparent; }
+  table.units thead { display: none; }
+  table.units, table.units tbody, table.units tr, table.units td { display: block; width: 100%; }
+  table.units tr {
+    background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: var(--shadow); margin-bottom: 14px; padding: 6px 0;
+  }
+  table.units td {
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    padding: 9px 16px; border-bottom: 1px solid var(--blue-light); text-align: right;
+  }
+  table.units td::before {
+    content: attr(data-label);
+    font-weight: 700; color: var(--gray); font-size: 0.82rem;
+    text-transform: uppercase; letter-spacing: 0.4px; text-align: left; flex-shrink: 0;
+  }
+  table.units td[data-label="Unit Size"] {
+    background: var(--blue-dark); color: #fff; border-radius: var(--radius) var(--radius) 0 0;
+    margin-top: -6px; font-size: 1.05rem; padding: 12px 16px;
+  }
+  table.units td[data-label="Unit Size"]::before { content: none; }
+  table.units td[data-label="Unit Size"] strong { width: 100%; text-align: left; }
+  table.units td[data-label="Unit Size"] a { color: #fff; }
+  table.units td[data-label="Action"] { border-bottom: 0; padding: 12px 16px 10px; }
+  table.units td[data-label="Action"]::before { content: none; }
+  table.units td[data-label="Action"] .btn { width: 100%; }
   .nav-toggle { display: block; }
   nav.main-nav {
     display: none; position: absolute; top: 100%; left: 0; right: 0;
