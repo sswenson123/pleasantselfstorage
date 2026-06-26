@@ -124,32 +124,17 @@ function normaliseKey(sizeStr) {
     function visit(node) {
       if (Array.isArray(node)) { node.forEach(visit); return; }
       if (node && typeof node === 'object') {
-        const keys = Object.keys(node);
-        const priceKey = keys.find((k) =>
-          /(web_?rate|standard_?rate|default_?rate|pushrate|rate|price)/i.test(k) &&
-          (typeof node[k] === 'number' ||
-            (typeof node[k] === 'string' && /\d/.test(node[k]))));
-        let sizeStr = null;
-        if (node.width != null && node.length != null) sizeStr = `${node.width}x${node.length}`;
-        else {
-          const nameKey = keys.find((k) =>
-            /(name|size|dimension|title|label)/i.test(k) &&
-            typeof node[k] === 'string' &&
-            /\d+\s*['′]?\s*[x×]\s*\d+/i.test(node[k]));
-          if (nameKey) sizeStr = node[nameKey];
-        }
-        if (priceKey && sizeStr) {
-          const priceNum = parseFloat(String(node[priceKey]).replace(/[^0-9.]/g, ''));
-          const availKey = keys.find((k) => /(available|vacant|availability)/i.test(k));
+        // StorEdge unit-groups shape: { size:"10x11x8", price:75, available_units_count:0, area:110 }
+        if (typeof node.size === 'string' && node.price != null &&
+            (typeof node.price === 'number' || /\d/.test(String(node.price)))) {
+          const priceNum = parseFloat(String(node.price).replace(/[^0-9.]/g, ''));
           let available = true;
-          if (availKey != null) {
-            const v = node[availKey];
-            available = typeof v === 'number' ? v > 0 : !!v;
-          }
-          const sig = `${sizeStr}|${priceNum}|${available}`;
-          if (!seen.has(sig)) { seen.add(sig); out.push({ sizeStr, price: priceNum, available }); }
+          if (typeof node.available_units_count === 'number') available = node.available_units_count > 0;
+          else if (typeof node.available === 'boolean') available = node.available;
+          const sig = node.size + '|' + priceNum + '|' + available;
+          if (!seen.has(sig)) { seen.add(sig); out.push({ sizeStr: node.size, price: priceNum, available }); }
         }
-        keys.forEach((k) => visit(node[k]));
+        Object.keys(node).forEach((k) => visit(node[k]));
       }
     }
     payloads.forEach((p) => visit(p.body));
