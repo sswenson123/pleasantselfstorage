@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>RV & Camper Storage in Hackensack, MN | From $40/mo | Pleasant Lake Storage</title>
-  <meta name="description" content="Gated RV & camper storage in Hackensack, MN near Walker & Pine River. 12x40 outdoor spaces from $40/mo, indoor units up to 11x28. 24/7 access, rent online in minutes.">
-  <link rel="canonical" href="https://pleasantlakestorage.com/rv-camper-storage.html">
+  <title>Boat & Pontoon Storage near Walker & Leech Lake, MN | Pleasant Lake Storage</title>
+  <meta name="description" content="Gated boat & pontoon storage in Hackensack, MN — minutes from Walker, Leech Lake, Birch Lake & Ten Mile Lake. Outdoor spaces from $40/mo, indoor units up to 11x28. Rent online.">
+  <link rel="canonical" href="https://pleasantlakestorage.com/boat-storage.html">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://pleasantlakestorage.com/rv-camper-storage.html">
+  <meta property="og:url" content="https://pleasantlakestorage.com/boat-storage.html">
   <meta property="og:site_name" content="Pleasant Lake Storage">
-  <meta property="og:title" content="RV & Camper Storage in Hackensack, MN | From $40/mo">
-  <meta property="og:description" content="Gated 12x40 outdoor spaces from $40/mo and indoor units up to 11x28. 24/7 access near Walker, MN.">
+  <meta property="og:title" content="Boat & Pontoon Storage near Walker & Leech Lake, MN">
+  <meta property="og:description" content="Gated outdoor boat parking from $40/mo and indoor units up to 11x28 — minutes from Leech Lake, Birch Lake & Ten Mile Lake.">
   <meta property="og:image" content="https://pleasantlakestorage.com/images/hero.jpg">
   <meta property="og:locale" content="en_US">
 
@@ -25,7 +25,7 @@
     "@type": "BreadcrumbList",
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://pleasantlakestorage.com/" },
-      { "@type": "ListItem", "position": 2, "name": "RV & Camper Storage", "item": "https://pleasantlakestorage.com/rv-camper-storage.html" }
+      { "@type": "ListItem", "position": 2, "name": "Boat & Pontoon Storage", "item": "https://pleasantlakestorage.com/boat-storage.html" }
     ]
   }
   </script>
@@ -34,14 +34,14 @@
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
-      { "@type": "Question", "name": "How much does RV storage cost in Hackensack, MN?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Gated 12x40 outdoor RV and camper parking at Pleasant Lake Storage is $40/month. Indoor units that fit smaller campers run $100 to $150/month depending on size." } },
-      { "@type": "Question", "name": "Can I get my camper out on weekends?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Yes — tenants have 24/7 gate access every day of the year. Hook up and go whenever you want, no office hours to work around." } },
-      { "@type": "Question", "name": "Is the RV parking area secure?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Yes. The entire property is fenced with tenant-only gated access, and the lot has easy in-and-out room for trailers and larger rigs." } },
-      { "@type": "Question", "name": "Do you offer winter camper storage?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Many of our tenants are seasonal — campers and RVs winter in our gated lot from fall through spring. Prepay 12 months and your 13th month is free." } }
+      { "@type": "Question", "name": "How much does boat storage cost near Walker, MN?",
+        "acceptedAnswer": { "@type": "Answer", "text": "At Pleasant Lake Storage in Hackensack, gated outdoor boat and pontoon parking is $40/month for a 12x40 space. Indoor units that fit boats run $90 to $150/month depending on size, up to 11x28." } },
+      { "@type": "Question", "name": "Can I store a pontoon indoors?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Our 10x24 ($120/mo), 11x24 ($135/mo), 11x26 ($140/mo), and 11x28 ($150/mo) units fit most pontoons on trailers. Call (218) 227-2899 with your trailer length and we will confirm the right fit." } },
+      { "@type": "Question", "name": "Can I get my boat in and out during the season?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes — tenants have gate access 24 hours a day, 7 days a week. Early launch mornings and late haul-outs are no problem." } },
+      { "@type": "Question", "name": "Do you store fish houses and ice houses?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Our 10x22 and 11x20 units ($110/mo) are popular for ice houses, and 12x40 outdoor spaces ($40/mo) work for wheeled fish houses in the off-season." } }
     ]
   }
   </script>
@@ -71,7 +71,6 @@
         <a href="/">Home</a>
         <a href="/#units">Units &amp; Prices</a>
         <a href="boat-storage.html">Boat &amp; RV</a>
-        <a href="tenant-protection.html">Tenant Protection</a>
         <a href="contact-us.html">Contact</a>
         <a class="btn btn-outline" href="https://rental-center.storedge.com/?companyId=ef2375f3-b212-4670-bbc0-be544f6614b6&amp;facilityId=159d76bf-6636-4e86-87fe-82fc497dc971#/login">Login / Pay Rent</a>
         <a class="btn btn-primary" href="https://rental-center.storedge.com/?companyId=ef2375f3-b212-4670-bbc0-be544f6614b6&amp;facilityId=159d76bf-6636-4e86-87fe-82fc497dc971#/move-in">Rent Now</a>
@@ -82,9 +81,9 @@
   <!-- Hero -->
   <section class="hero">
     <div class="container">
-      <span class="eyebrow">🚐 RV &amp; Camper Storage · Hackensack, MN</span>
-      <h1>RV &amp; Camper Storage in Hackensack, MN</h1>
-      <p class="sub">Gated 12×40 spaces from $40/month with 24/7 access — park the camper minutes from the lakes instead of hauling it home after every trip.</p>
+      <span class="eyebrow">🚤 Boat &amp; Pontoon Storage · Hackensack, MN</span>
+      <h1>Boat &amp; Pontoon Storage near Walker, Leech Lake &amp; Ten Mile Lake</h1>
+      <p class="sub">Gated outdoor parking from $40/month and clean indoor units up to 11×28 — in the middle of lake country, so your boat stays at the lake, not in your driveway.</p>
       <div class="hero-ctas">
         <a class="btn btn-primary" href="https://rental-center.storedge.com/?companyId=ef2375f3-b212-4670-bbc0-be544f6614b6&amp;facilityId=159d76bf-6636-4e86-87fe-82fc497dc971#/move-in">Reserve Your Space</a>
         <a class="btn btn-outline" style="border-color:#fff;color:#fff !important;" href="tel:+12182272899">Call (218) 227-2899</a>
@@ -92,8 +91,8 @@
       <div class="badges">
         <span>🔒 Gated &amp; Fenced</span>
         <span>🕐 24/7 Access</span>
-        <span>💲 $40/mo Outdoor</span>
-        <span>🚛 Easy Trailer Access</span>
+        <span>💲 Outdoor from $40/mo</span>
+        <span>🏠 Indoor up to 11×28</span>
       </div>
     </div>
   </section>
@@ -109,15 +108,15 @@
   <section>
     <div class="container">
       <div class="section-head">
-        <h2>Keep the Camper at the Lakes</h2>
-        <p>Between Leech Lake, Ten Mile Lake, and the Chippewa National Forest, this is camper country — and your rig deserves better than street parking.</p>
+        <h2>Storage Built for Lake Country Boats</h2>
+        <p>Pleasant Lake Storage sits just outside Hackensack — with 127 lakes within 10 miles, and minutes from Birch Lake, Ten Mile Lake, and Leech Lake.</p>
       </div>
-      <p>If your camper spends its summers between Hackensack, Walker, Backus, and Pine River, storing it up here beats towing it down Highway 371 after every weekend. Our gated lot on County Road 45 gives you a <strong>12×40 space for $40/month</strong> — room for travel trailers, fifth wheels, Class A/B/C motorhomes, and toy haulers — with wide lanes for easy backing and hookup.</p>
-      <p>Many townships and HOAs restrict RV parking in driveways, and an uncovered rig at home is an invitation for weather damage and break-ins. Behind our fence, it's out of sight and inside a tenant-only gate — and with <strong>24/7 access</strong>, you can hook up at sunrise Friday and drop it off Sunday night.</p>
+      <p>Every fall, thousands of boats and pontoons come off Leech Lake, Ten Mile Lake, Birch Lake, and the dozens of smaller lakes around Hackensack, Walker, and Longville. Hauling them back to the Cities — or leaving them uncovered in a yard all winter — is exactly what our facility exists to prevent. Store your boat inside our gated, fenced lot a few minutes from the landing, and it's waiting for you at ice-out next spring.</p>
+      <p>Our <strong>12×40 outdoor parking spaces are $40/month</strong> — big enough for pontoons, fishing boats on trailers, and wake boats. If you want your boat out of the weather entirely, our indoor drive-in units go up to <strong>11×28 with 8-foot doors</strong>, sized for everything from a 14-foot fishing rig to a full-size pontoon on its trailer.</p>
 
       <div class="section-head" style="margin-top:2.5rem;">
-        <h2>Options &amp; Pricing</h2>
-        <p>Straightforward monthly rates — see live availability on the <a href="/#units">Units &amp; Prices table</a>.</p>
+        <h2>Which Unit Fits Your Boat?</h2>
+        <p>Real prices, no quotes needed. Availability changes often — waitlisted sizes open regularly.</p>
       </div>
       <div class="units-table-wrap">
         <table class="units">
@@ -125,29 +124,34 @@
             <tr><th>Option</th><th>Fits</th><th>Monthly Rate</th></tr>
           </thead>
           <tbody>
-            <tr><td><strong>12×40 Outdoor Space</strong></td><td>Travel trailers, fifth wheels, motorhomes, toy haulers</td><td>$40</td></tr>
-            <tr><td><strong>10×20 / 11×20 Indoor</strong></td><td>Small campers, pop-ups, teardrops</td><td>$100–$110</td></tr>
-            <tr><td><strong>10×24 – 11×28 Indoor</strong></td><td>Larger campers &amp; travel trailers (8' door height)</td><td>$120–$150</td></tr>
+            <tr><td><strong>12×40 Outdoor Space</strong></td><td>Any boat, pontoon, or wheeled fish house on a trailer</td><td>$40</td></tr>
+            <tr><td><strong>11×16 Indoor</strong></td><td>Small fishing boat, jet skis, side-by-side</td><td>$90</td></tr>
+            <tr><td><strong>11×18 / 10×20 Indoor</strong></td><td>Fishing boat &amp; trailer up to ~18'</td><td>$100</td></tr>
+            <tr><td><strong>10×22 / 11×20 Indoor</strong></td><td>Longer boats, ice houses</td><td>$110</td></tr>
+            <tr><td><strong>10×24 Indoor</strong></td><td>Pontoons, larger boats</td><td>$120</td></tr>
+            <tr><td><strong>11×24 – 11×28 Indoor</strong></td><td>Large pontoons, tritoons, biggest trailers</td><td>$135–$150</td></tr>
           </tbody>
         </table>
       </div>
-      <p style="margin-top:1rem;">Not sure if your rig fits indoors? <a href="tel:+12182272899">Call (218) 227-2899</a> with your length and height and we'll tell you straight.</p>
+      <p style="margin-top:1rem;">See live availability on the <a href="/#units">Units &amp; Prices table</a>, or <a href="tel:+12182272899">call us</a> with your trailer length and we'll match you to the right unit.</p>
 
       <div class="section-head" style="margin-top:2.5rem;">
-        <h2>Year-Round or Seasonal</h2>
+        <h2>Why Boaters Choose Pleasant Lake</h2>
         <p></p>
       </div>
-      <p><strong>Summer home base:</strong> keep the camper 15 minutes from Walker and the Leech Lake campgrounds all season.</p>
-      <p><strong>Winter storage:</strong> winterize it, park it, and pick it up at fishing opener — prepay 12 months and the 13th is free.</p>
-      <p><strong>Snowbirds:</strong> store the rig safely while you're south for the winter, with month-to-month flexibility when plans change.</p>
+      <p><strong>Gated and fenced.</strong> The entire property is fenced with tenant-only gate access — your boat isn't sitting in an open yard.</p>
+      <p><strong>24/7 access for the season.</strong> Launch at 5 AM, haul out at dusk — your schedule, not office hours.</p>
+      <p><strong>Minutes from the landings.</strong> We're right off County Road 45 near Hackensack: about 15 minutes from Walker and Leech Lake, and closer still to Birch Lake, Ten Mile Lake, and Pleasant Lake itself.</p>
+      <p><strong>Fair, published prices.</strong> $40/month outdoor. No "call for a quote" games — the price list is on this page.</p>
+      <p><strong>Winter-ready.</strong> Shrink-wrapped boat? Outdoor space. Want it out of the snow load and sun entirely? Indoor unit. Ice house going out in December? We store those too.</p>
     </div>
   </section>
 
   <!-- CTA -->
   <section class="hero" style="padding:3rem 0;">
     <div class="container">
-      <h2 style="color:#fff;">Spaces Fill Before Every Season</h2>
-      <p class="sub">Reserve your 12×40 space online in minutes — first month free offers available.</p>
+      <h2 style="color:#fff;">Reserve Before Fall Haul-Out</h2>
+      <p class="sub">Boat storage fills up fast when the water gets cold. Lock in your space online in minutes.</p>
       <div class="hero-ctas">
         <a class="btn btn-primary" href="https://rental-center.storedge.com/?companyId=ef2375f3-b212-4670-bbc0-be544f6614b6&amp;facilityId=159d76bf-6636-4e86-87fe-82fc497dc971#/move-in">Rent Now</a>
         <a class="btn btn-outline" style="border-color:#fff;color:#fff !important;" href="tel:+12182272899">📞 (218) 227-2899</a>
