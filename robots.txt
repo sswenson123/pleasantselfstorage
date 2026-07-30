@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.pleasantlakestorage.com/sitemap.xml
+Sitemap: https://pleasantlakestorage.com/sitemap.xml

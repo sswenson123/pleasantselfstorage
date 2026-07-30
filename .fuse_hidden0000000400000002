@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tenant Protection | Pleasant Lake Storage | Hackensack, MN</title>
-  <meta name="description" content="Protect your stored belongings at Pleasant Lake Storage in Hackensack, MN. Affordable tenant protection plans added at move-in — coverage for boats, RVs, and household items.">
-  <link rel="canonical" href="https://pleasantlakestorage.com/tenant-protection.html">
+  <title>Contact Us | Pleasant Lake Storage | Hackensack, MN Storage Units</title>
+  <meta name="description" content="Contact Pleasant Lake Storage in Hackensack, MN. Call (218) 227-2899 or send a message about gated storage units, outdoor boat & RV parking, and waitlist openings.">
+  <link rel="canonical" href="https://pleasantlakestorage.com/contact-us.html">
   <meta name="robots" content="index, follow">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://pleasantlakestorage.com/tenant-protection.html">
+  <meta property="og:url" content="https://pleasantlakestorage.com/contact-us.html">
   <meta property="og:site_name" content="Pleasant Lake Storage">
-  <meta property="og:title" content="Tenant Protection | Pleasant Lake Storage">
-  <meta property="og:description" content="Affordable protection plans for your stored belongings in Hackensack, MN.">
+  <meta property="og:title" content="Contact Pleasant Lake Storage | Hackensack, MN">
+  <meta property="og:description" content="Call (218) 227-2899 or message us about storage units and outdoor parking in Hackensack, MN.">
   <link rel="icon" type="image/svg+xml" href="images/logo-mark.svg">
   <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -37,10 +37,6 @@
       <nav class="main-nav" aria-label="Main navigation">
         <a href="/">Home</a>
         <a href="/#units">Units &amp; Prices</a>
-        <a href="boat-storage.html">Boat &amp; Pontoon Storage</a>
-        <a href="rv-camper-storage.html">RV &amp; Camper Storage</a>
-        <a href="storage-walker-mn.html">Storage near Walker</a>
-        <a href="storage-longville-mn.html">Storage near Longville</a>
         <a href="tenant-protection.html">Tenant Protection</a>
         <a href="contact-us.html">Contact</a>
         <a class="btn btn-outline" href="https://rental-center.storedge.com/?companyId=ef2375f3-b212-4670-bbc0-be544f6614b6&amp;facilityId=159d76bf-6636-4e86-87fe-82fc497dc971#/login">Login / Pay Rent</a>
@@ -51,35 +47,40 @@
 
   <div class="page-hero">
     <div class="container">
-      <h1>Tenant Protection</h1>
-      <p>Peace of mind for everything you store with us.</p>
+      <h1>Contact Us</h1>
+      <p>Questions, waitlist requests, or help renting — we're quick to respond.</p>
     </div>
   </div>
 
   <section>
-    <div class="container content-narrow">
-      <h2>Why Tenant Protection Matters</h2>
-      <p>Your homeowner's or renter's insurance may not fully cover belongings kept in a storage unit — and boats, RVs, and seasonal equipment are exactly the kinds of items worth protecting. That's why we make affordable tenant protection available to every tenant at move-in.</p>
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h3>Get in Touch</h3>
+          <p>📞 <a href="tel:+12182272899">(218) 227-2899</a></p>
+          <p>✉️ <a href="mailto:wi64selfstorage@gmail.com">wi64selfstorage@gmail.com</a></p>
+          <p>📍 2475 County Road 45 NW, Hackensack, MN 56452</p>
+          <p>🕐 Gate access: 24/7 for tenants</p>
 
-      <h2>How It Works</h2>
-      <ul>
-        <li><strong>Add it when you rent.</strong> Protection options are presented during the online move-in process — choose the coverage level that fits what you're storing.</li>
-        <li><strong>Already have coverage?</strong> If your own insurance covers stored property, you can provide proof of that instead.</li>
-        <li><strong>Questions?</strong> Call us at <a href="tel:+12182272899">(218) 227-2899</a> and we'll walk you through the options before you commit.</li>
-      </ul>
-
-      <h2>Our Facility Does Its Part Too</h2>
-      <ul>
-        <li>Fully <strong>gated and fenced</strong> property — tenant-only access</li>
-        <li>Clean, dry, well-maintained units</li>
-        <li>Well-lit grounds with wide drive aisles</li>
-      </ul>
-
-      <p style="margin-top:28px;">
-        <a class="btn btn-primary" href="https://rental-center.storedge.com/?companyId=ef2375f3-b212-4670-bbc0-be544f6614b6&amp;facilityId=159d76bf-6636-4e86-87fe-82fc497dc971#/move-in">Rent a Unit Now</a>
-        &nbsp;
-        <a class="btn btn-outline" href="contact-us.html">Ask a Question</a>
-      </p>
+          <h3 style="margin-top:28px;">Send a Message</h3>
+          <form action="https://formspree.io/f/mkoaqoya" method="POST" style="display:grid;gap:12px;max-width:440px;">
+            <input type="hidden" name="_subject" value="New message from pleasantlakestorage.com">
+            <input type="text" name="name" placeholder="Full Name" required style="padding:12px;border:1px solid var(--line);border-radius:8px;font-size:1rem;">
+            <input type="email" name="email" placeholder="Email Address" required style="padding:12px;border:1px solid var(--line);border-radius:8px;font-size:1rem;">
+            <input type="tel" name="phone" placeholder="Phone Number" style="padding:12px;border:1px solid var(--line);border-radius:8px;font-size:1rem;">
+            <textarea name="message" rows="4" placeholder="Your message — e.g. 'Add me to the waitlist for a 10x20'" required style="padding:12px;border:1px solid var(--line);border-radius:8px;font-size:1rem;font-family:inherit;"></textarea>
+            <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+            <button type="submit" class="btn btn-primary" style="border:0;cursor:pointer;">Send Message</button>
+          </form>
+          <p style="margin-top:10px;font-size:0.85rem;">Prefer email? Write us directly at <a href="mailto:wi64selfstorage@gmail.com">wi64selfstorage@gmail.com</a>.</p>
+        </div>
+        <div>
+          <iframe class="map-embed" style="height:480px;" loading="lazy" title="Map to Pleasant Lake Storage, 2475 County Road 45 NW, Hackensack MN"
+            src="https://maps.google.com/maps?q=2475%20County%20Road%2045%20NW%20Hackensack%2C%20MN%2056452&amp;t=m&amp;z=12&amp;output=embed&amp;iwloc=near"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <p style="margin-top:12px;text-align:center;"><a class="btn btn-blue" href="https://www.google.com/maps/dir/?api=1&amp;destination=2475+County+Road+45+NW+Hackensack+MN+56452" rel="noopener">Get Directions</a></p>
+        </div>
+      </div>
     </div>
   </section>
 
