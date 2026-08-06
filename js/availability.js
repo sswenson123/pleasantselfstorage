@@ -12,7 +12,7 @@
   var JSON_PATH = 'data/availability.json';
   var RENT_URL = 'https://rental-center.storedge.com/?companyId=ef2375f3-b212-4670-bbc0-be544f6614b6&facilityId=159d76bf-6636-4e86-87fe-82fc497dc971#/move-in';
 
-  fetch(JSON_PATH, { cache: 'no-store' })
+  fetch(JSON_PATH + '?t=' + Date.now(), { cache: 'no-store' })
     .then(function (r) { return r.ok ? r.json() : null; })
     .then(function (data) { if (data) apply(data); })
     .catch(function () { /* leave hand-entered values in place */ });
