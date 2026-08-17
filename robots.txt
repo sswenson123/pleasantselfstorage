@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /*?elementor_library=
+Disallow: /wp-*
+Disallow: /20*/
 
-Sitemap: https://pleasantlakestorage.com/sitemap.xml
+Sitemap: https://www.pleasantlakestorage.com/sitemap.xml
