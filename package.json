@@ -1,0 +1,13 @@
+{
+  "name": "pleasant-lake-site-tests",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Browser tests for the Pleasant Lake move-out wizard. The site itself is static; this is test tooling only.",
+  "scripts": {
+    "test:web": "node e2e/run.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.49.1"
+  }
+}

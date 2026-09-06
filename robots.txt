@@ -3,5 +3,6 @@ Allow: /
 Disallow: /*?elementor_library=
 Disallow: /wp-*
 Disallow: /20*/
+Disallow: /move-out.html
 
 Sitemap: https://www.pleasantlakestorage.com/sitemap.xml
