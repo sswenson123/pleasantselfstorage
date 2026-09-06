@@ -3,3 +3,5 @@ package-lock.json
 scraper.log
 data/storedge-raw.json
 .DS_Store
+preview-artifact.html
+preview-wrapped.html
