@@ -23,6 +23,7 @@
 
   var MAX_EDGE = 1600;      // px, long edge after resize
   var TARGET_KB = 380;      // per photo
+  var POST_TIMEOUT_MS = 30000;   // matches the 90s upload ceiling in spirit
   var MAX_PHOTOS = 6;    // 3 required + 3 optional; must match the server's cap
   var PHONE_HELP = 'call ' + FACILITY_PHONE;
 
@@ -60,9 +61,21 @@
   function parseIso(s) { var p = String(s).split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
   function fmtLong(d) { return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }); }
   function fmtDay(d) { return d.toLocaleDateString('en-US', { weekday: 'long' }); }
-  function endOfThisMonth() { var n = new Date(); return new Date(n.getFullYear(), n.getMonth() + 1, 0); }
+  function endOfThisMonth() { var t = todayMidnight(); return new Date(t.getFullYear(), t.getMonth() + 1, 0); }
 
-  function todayMidnight() { var n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); }
+  /* The facility's calendar day, not the phone's. A customer scheduling from
+     another time zone — or with a phone clock that has drifted — must see the
+     same "today" the Worker enforces, which is America/Chicago. Falls back to
+     the device's local day only if Intl has no time-zone data. */
+  var FACILITY_TZ = 'America/Chicago';
+  function facilityTodayIso() {
+    try {
+      return new Intl.DateTimeFormat('en-CA', {
+        timeZone: FACILITY_TZ, year: 'numeric', month: '2-digit', day: '2-digit'
+      }).format(new Date());
+    } catch (e) { return iso(new Date()); }
+  }
+  function todayMidnight() { return parseIso(facilityTodayIso()); }
 
   /**
    * Why the date is not acceptable, in the customer's words — or '' when it is
@@ -173,6 +186,9 @@
     try {
       sessionStorage.setItem(SKEY, JSON.stringify({
         uploadToken: S.uploadToken,
+        // Without this a stalled submit + reload mints a new key and books the
+        // move-out twice — the exact thing the key exists to prevent.
+        idempotencyKey: S.idempotencyKey,
         unit: S.unit, phone: S.phone, name: S.name,
         noticeDate: S.noticeDate, noticeMode: S.noticeMode,
         photos: S.photos.map(function (p) {
@@ -191,6 +207,7 @@
     uploadToken: (restored && restored.uploadToken) || randomToken(),
     name: (restored && restored.name) || '',
     phone: (restored && restored.phone) || '',
+    idempotencyKey: (restored && restored.idempotencyKey) || '',
     noticeDate: (restored && restored.noticeDate) || '',
     // the three parts, held separately while only some of them are chosen
     dy: '', dm: '', dd: '',
@@ -199,7 +216,6 @@
     photos: (restored && restored.photos) || [null, null, null],
     extras: (restored && restored.extras) || [],
     confs: [false, false, false],
-    idempotencyKey: '',
     result: null,
     submitting: false
   };
@@ -421,14 +437,29 @@
   }
 
   function postJsonHttp(path, payload) {
-    return fetch(API_BASE + path, {
+    /* fetch() waits forever by default. On a weak signal inside a metal
+       building that leaves the button on "Sending…" with no way out but a
+       reload — which is why the idempotency key is now persisted: the retry
+       carries the same key and the server returns the original record. */
+    var ctl = typeof AbortController === 'function' ? new AbortController() : null;
+    var timer = ctl ? setTimeout(function () { ctl.abort(); }, POST_TIMEOUT_MS) : null;
+    var options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
-    }).then(function (res) {
+    };
+    if (ctl) options.signal = ctl.signal;
+    return fetch(API_BASE + path, options).then(function (res) {
+      if (timer) clearTimeout(timer);
       return res.json().catch(function () { return null; }).then(function (body) {
         return { status: res.status, body: body };
       });
+    }).catch(function (err) {
+      if (timer) clearTimeout(timer);
+      if (err && err.name === 'AbortError') {
+        throw new Error('That took too long to send. Check your signal and try again.');
+      }
+      throw err;
     });
   }
 
@@ -536,7 +567,7 @@
             reviewHead('Your notice', 'n1') +
             row('Name', S.name) +
             row('Phone', maskTel(S.phone), true) +
-            row('Planned move-out', fmtLong(parseIso(S.noticeDate))) +
+            row('Planned move-out', S.noticeDate ? fmtLong(parseIso(S.noticeDate)) : '\u2014') +
           '</div>' +
           '<div class="mo-remind">When you are completely moved out, <strong>return here</strong> to send us your final move-out photos.</div>',
         foot: '<button type="button" class="mo-btn" data-submit="scheduled"' + (S.submitting ? ' disabled' : '') + '>' +
@@ -546,13 +577,14 @@
 
     n4: function () {
       var r = S.result || {};
-      var d = r.plannedMoveOutDate ? parseIso(r.plannedMoveOutDate) : parseIso(S.noticeDate);
+      var d = r.plannedMoveOutDate ? parseIso(r.plannedMoveOutDate)
+        : (S.noticeDate ? parseIso(S.noticeDate) : null);
       return {
         step: 3, of: 3, center: true, noBack: true,
         body:
           '<div class="mo-mark">✓</div>' +
           '<h2 class="mo-done-h">Move-out notice received</h2>' +
-          '<div class="mo-stamp">Planned move-out<br>' + esc(fmtLong(d)) + '</div>' +
+          (d ? '<div class="mo-stamp">Planned move-out<br>' + esc(fmtLong(d)) + '</div>' : '') +
           '<div class="mo-next">When the unit is empty, swept and your lock has been removed, ' +
             'return to the Move Out page and select <strong>I’ve Already Moved Out</strong>.</div>' +
           '<p class="mo-sms">💬 We’ll text a confirmation to ' + esc(maskTel(S.phone)) + '</p>',
@@ -669,7 +701,7 @@
             row('Photos', count + ' attached') +
           '</div>' +
           '<p class="mo-optional" style="text-align:left;margin-top:9px">Move-out date: <b>today, ' +
-            esc(fmtLong(new Date())) + '</b></p>',
+            'today\u2019s date</b> \u2014 the moment you submit.</p>',
         foot: '<button type="button" class="mo-btn" data-submit="completed"' +
           (all && !S.submitting ? '' : ' disabled') + '>' +
           (S.submitting ? 'Submitting…' : 'Confirm &amp; Submit Move-Out') + '</button>'
@@ -684,7 +716,7 @@
           '<div class="mo-mark">✓</div>' +
           '<h2 class="mo-done-h">Move-out request received</h2>' +
           '<div class="mo-stamp" style="font-size:18px;letter-spacing:.07em">Unit ' + esc(r.unitNumber || S.unit.toUpperCase()) + '</div>' +
-          '<p class="mo-done-p">Your move-out date is <b>' + esc(r.completedAtLabel || fmtLong(new Date())) + '</b>. ' +
+          '<p class="mo-done-p">' + (r.completedAtLabel ? 'Your move-out date is <b>' + esc(r.completedAtLabel) + '</b>. ' : '') +
             'We’ll review your photos and be in touch if anything else is needed.</p>' +
           '<div class="mo-next"><strong>Leave the door unlocked</strong> with your padlock off — ' +
             'we can’t finish a move-out on a locked unit.</div>' +
@@ -712,6 +744,10 @@
   }
 
   function go(id) {
+    // Review has nothing to show without a date; send them back to pick one.
+    if (id === 'n3' && !validNoticeDate(S.noticeDate)) id = 'n2';
+    // Entering either flow claims the key that will submit it.
+    if (id === 'n1' || id === 'o1') ensureKey();
     if (here !== id) trail.push(here);
     alertText = '';
     here = id;
@@ -731,6 +767,7 @@
     S.uploadToken = randomToken();
     S.name = ''; S.phone = ''; S.noticeDate = ''; S.noticeMode = '';
     S.dy = ''; S.dm = ''; S.dd = '';
+    S.idempotencyKey = '';
     S.unit = ''; S.photos = [null, null, null]; S.extras = [];
     S.confs = [false, false, false]; S.idempotencyKey = ''; S.result = null; S.submitting = false;
     trail = []; here = 'home'; alertText = '';
@@ -873,6 +910,11 @@
   picker.style.display = 'none';
   document.body.appendChild(picker);
   var targetSlot = 0;
+  /* Retaking a slot while its first upload is still in flight used to let the
+     older response land second and write a stale photoId — which the server
+     then rejected as a missing required slot, with no clue why. Every attempt
+     takes a ticket; only the newest ticket for a slot may write. */
+  var slotSeq = { INSIDE: 0, FLOOR: 0, DOOR: 0, EXTRA: 0 };
 
   function pickFile(index) {
     if (index === -1 && S.photos.filter(function (p) { return p && p.photoId; }).length + S.extras.length >= MAX_PHOTOS) return;
@@ -886,6 +928,8 @@
     if (!file) return;
     var index = targetSlot;
     var slotKey = index >= 0 ? SLOTS[index].key : 'EXTRA';
+    var ticket = ++slotSeq[slotKey];
+    var current = function () { return slotSeq[slotKey] === ticket; };
 
     if (index >= 0) {
       S.photos[index] = { slot: slotKey, state: 'uploading', progress: 0, photoId: null, thumb: '' };
@@ -894,11 +938,13 @@
 
     prepareImage(file)
       .then(function (prepared) {
-        if (index >= 0) {
+        if (!current()) return null;
+        if (index >= 0 && S.photos[index]) {
           S.photos[index].thumb = prepared.thumb;
           render(true);
         }
         return uploadPhoto(prepared, slotKey, function (fraction) {
+          if (!current()) return;
           if (index >= 0 && S.photos[index]) {
             S.photos[index].progress = fraction;
             var fill = body.querySelectorAll('.mo-slot')[index];
@@ -908,6 +954,8 @@
         }).then(function (result) { return { result: result, prepared: prepared }; });
       })
       .then(function (out) {
+        // A superseded attempt stops here: its photoId is already stale.
+        if (!out || !current()) return;
         var entry = { slot: slotKey, state: 'done', photoId: out.result.photoId, thumb: out.prepared.thumb, progress: 1 };
         if (index >= 0) S.photos[index] = entry;
         else S.extras.push(entry);
@@ -915,6 +963,7 @@
         render(true);
       })
       .catch(function (err) {
+        if (!current()) return;   // a newer attempt owns this slot now
         var message = (err && err.message) || 'That photo did not upload. Please try again.';
         if (index >= 0) {
           S.photos[index] = { slot: slotKey, state: 'failed', error: message, photoId: null, thumb: '' };
@@ -926,8 +975,10 @@
   });
 
   // ── submissions ───────────────────────────────────────────────────────────
+  /* Minted when a flow starts and kept until it succeeds, so a retry — by the
+     customer, or after a reload — reuses it and the server de-duplicates. */
   function ensureKey() {
-    if (!S.idempotencyKey) S.idempotencyKey = randomToken();
+    if (!S.idempotencyKey) { S.idempotencyKey = randomToken(); saveSession(); }
     return S.idempotencyKey;
   }
 
@@ -943,7 +994,7 @@
 
     postJson('/api/move-outs/scheduled', {
       name: S.name.trim(),
-      phone: maskTel(S.phone),
+      phone: digits(S.phone),
       plannedMoveOutDate: S.noticeDate,
       idempotencyKey: ensureKey()
     }).then(function (res) {
@@ -987,7 +1038,7 @@
 
     postJson('/api/move-outs/completed', {
       unitNumber: S.unit.trim(),
-      phone: maskTel(S.phone),
+      phone: digits(S.phone),
       confirmations: { empty: S.confs[0], swept: S.confs[1], lockRemoved: S.confs[2] },
       photoIds: ids,
       uploadToken: S.uploadToken,
