@@ -247,3 +247,8 @@ footer .legal { border-top: 1px solid rgba(255,255,255,0.15); padding-top: 18px;
   .grid-3 { grid-template-columns: 1fr; }
   section { padding: 48px 0; }
 }
+
+/* Move Out is why a leaving customer comes to the site: heavier and darker than
+   its neighbours, same size and family so it still reads as one nav. */
+nav.main-nav a[href="move-out.html"] { font-weight: 800; color: var(--blue-dark, #08375f); }
+nav.main-nav a[href="move-out.html"]:hover { color: var(--blue); }

@@ -11,6 +11,45 @@ const IPHONE_SE = { width: 320, height: 568 };   // smallest phone still in use
 const IPHONE_14 = { width: 390, height: 664 };   // 844 minus browser chrome
 const KEYBOARD_OPEN = { width: 390, height: 330 }; // iOS keyboard eats ~half the screen
 
+const DAY = 86400000;
+/** The facility's calendar day — the page uses America/Chicago, not the runner's zone. */
+const facilityNow = () => {
+  const p = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Chicago',
+    year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()).split('-');
+  return new Date(+p[0], +p[1] - 1, +p[2]);
+};
+const isoOf = (d) => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+const SOON = (days) => isoOf(new Date(Date.now() + days * DAY));
+const YESTERDAY = () => isoOf(new Date(Date.now() - DAY));
+const LONG = (iso) => { const p = iso.split('-'); return new Date(+p[0], +p[1] - 1, +p[2])
+  .toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }); };
+
+const plus = (days) => { const d = new Date(facilityNow().getTime() + days * 86400000);
+  return { y: d.getFullYear(), m: d.getMonth() + 1, d: d.getDate() }; };
+
+/** Enabled option values of a select. */
+async function opts(page, sel) {
+  return page.$$eval(sel + ' option', (os) => os.filter((o) => o.value && !o.disabled).map((o) => o.value));
+}
+/** Every option, with its label and whether it is pickable. */
+async function allOpts(page, sel) {
+  return page.$$eval(sel + ' option', (os) => os.filter((o) => o.value)
+    .map((o) => ({ value: o.value, label: o.textContent, disabled: o.disabled })));
+}
+async function pickDate(page, { y, m, d }) {
+  await page.selectOption('#d-year', String(y));
+  await page.selectOption('#d-month', String(m));
+  await page.selectOption('#d-day', String(d));
+  await page.waitForTimeout(120);
+}
+
+async function toDateScreen(page) {
+  await page.locator('[data-go="n1"]').click();
+  await page.locator('#f-name').fill('A Tenant');
+  await page.locator('#f-phone').fill('6515550100');
+  await page.locator('[data-next="n2"]').click();
+}
+
 const results = [];
 let failures = 0;
 
@@ -102,21 +141,211 @@ await test('scheduled continue stays disabled until name and phone are valid', a
   await ctx.close();
 });
 
-await test('date screen offers end-of-month and any picked date, exclusively', async () => {
+await test('date screen offers end-of-month or a three-part selection, exclusively', async () => {
   const { page, ctx } = await fresh(browser);
-  await page.locator('[data-go="n1"]').click();
-  await page.locator('#f-name').fill('A Tenant');
-  await page.locator('#f-phone').fill('6515550100');
-  await page.locator('[data-next="n2"]').click();
+  await toDateScreen(page);
   assert.equal(await page.locator('[data-next="n3"]').isDisabled(), true);
   await page.locator('[data-eom]').click();
   assert.equal(await page.locator('[data-next="n3"]').isDisabled(), false);
-  const eomText = await page.locator('[data-eom]').innerText();
-  await page.locator('input[data-bind="noticeDate"]').fill('2099-07-15');
-  await page.waitForTimeout(200);
-  assert.equal((await page.locator('[data-eom]').getAttribute('class')).includes('on'), false, 'shortcut clears when a date is picked');
-  assert.match(await page.locator('.mo-date .face').innerText(), /July 15, 2099/);
-  assert.ok(eomText.length > 0);
+  await pickDate(page, plus(30));
+  assert.equal((await page.locator('[data-eom]').getAttribute('class')).includes('on'), false,
+    'the shortcut clears once a date is chosen by hand');
+  assert.equal(await page.locator('[data-next="n3"]').isDisabled(), false);
+  await ctx.close();
+});
+
+await test('the date is three selects — nothing can be typed', async () => {
+  const { page, ctx } = await fresh(browser);
+  await toDateScreen(page);
+  assert.equal(await page.locator('.mo-dparts input').count(), 0, 'no text input on the date screen');
+  assert.equal(await page.locator('.mo-dparts select').count(), 3, 'month, day and year');
+  for (const id of ['#d-month', '#d-day', '#d-year']) {
+    const el = page.locator(id);
+    assert.equal(await el.evaluate((n) => n.tagName), 'SELECT', id + ' is a native select');
+    assert.ok((await el.boundingBox()).height >= 44, id + ' is a full-size tap target');
+  }
+  await ctx.close();
+});
+
+await test('month, day and year lists offer only what is possible', async () => {
+  const { page, ctx } = await fresh(browser);
+  await toDateScreen(page);
+  const now = facilityNow();
+
+  // years: this one and the two after it, and nothing else
+  const years = await opts(page, '#d-year');
+  assert.deepEqual(years.map(Number), [now.getFullYear(), now.getFullYear() + 1, now.getFullYear() + 2]);
+
+  // all twelve months are listed; the ones already gone this year are not pickable
+  await page.selectOption('#d-year', String(now.getFullYear()));
+  const months = await allOpts(page, '#d-month');
+  assert.equal(months.length, 12, 'January through December');
+  assert.equal(months[0].label, 'January');
+  assert.equal(months[11].label, 'December');
+  for (let m = 0; m < 12; m++) {
+    assert.equal(months[m].disabled, m < now.getMonth(), months[m].label + ' pickable state');
+  }
+
+  // in the current month, days already past are not pickable
+  await page.selectOption('#d-month', String(now.getMonth() + 1));
+  const days = await allOpts(page, '#d-day');
+  assert.equal(days.filter((d) => !d.disabled).length,
+    new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate() - now.getDate() + 1,
+    'only today onward is pickable this month');
+  await ctx.close();
+});
+
+await test('day counts follow the month, including leap years', async () => {
+  const { page, ctx } = await fresh(browser);
+  await toDateScreen(page);
+  const y = facilityNow().getFullYear();
+  const leap = (n) => (n % 4 === 0 && n % 100 !== 0) || n % 400 === 0;
+  const cases = [[1, 31], [4, 30], [6, 30], [9, 30], [11, 30], [12, 31]];
+  for (const yr of [y + 1, y + 2]) {
+    await page.selectOption('#d-year', String(yr));
+    for (const [m, want] of cases) {
+      await page.selectOption('#d-month', String(m));
+      assert.equal((await opts(page, '#d-day')).length, want, `${yr}-${m} has ${want} days`);
+    }
+    await page.selectOption('#d-month', '2');
+    assert.equal((await opts(page, '#d-day')).length, leap(yr) ? 29 : 28,
+      `February ${yr} has ${leap(yr) ? 29 : 28} days`);
+  }
+  await ctx.close();
+});
+
+await test('a day that stops existing is dropped, not silently kept', async () => {
+  const { page, ctx } = await fresh(browser);
+  await toDateScreen(page);
+  const y = facilityNow().getFullYear() + 1;
+  await page.selectOption('#d-year', String(y));
+  await page.selectOption('#d-month', '1');
+  await page.selectOption('#d-day', '31');
+  assert.equal(await page.locator('[data-next="n3"]').isDisabled(), false, 'January 31 is fine');
+  await page.selectOption('#d-month', '2');            // February has no 31st
+  await page.waitForTimeout(150);
+  assert.equal(await page.locator('#d-day').inputValue(), '', 'the impossible day is cleared');
+  assert.equal(await page.locator('[data-next="n3"]').isDisabled(), true, 'Continue goes back off');
+  assert.equal(await page.locator('.mo-chosen').isVisible(), false);
+  await page.selectOption('#d-day', '28');
+  assert.equal(await page.locator('[data-next="n3"]').isDisabled(), false);
+  await ctx.close();
+});
+
+await test('Continue stays disabled until all three parts are chosen', async () => {
+  const { page, ctx } = await fresh(browser);
+  await toDateScreen(page);
+  const y = facilityNow().getFullYear() + 1;
+  const cont = page.locator('[data-next="n3"]');
+  assert.equal(await cont.isDisabled(), true, 'nothing chosen');
+  await page.selectOption('#d-year', String(y));
+  assert.equal(await cont.isDisabled(), true, 'year only');
+  await page.selectOption('#d-month', '9');
+  assert.equal(await cont.isDisabled(), true, 'year and month only');
+  await page.selectOption('#d-day', '20');
+  assert.equal(await cont.isDisabled(), false, 'all three');
+  await ctx.close();
+});
+
+await test('the chosen date is confirmed underneath in words', async () => {
+  const { page, ctx } = await fresh(browser);
+  await toDateScreen(page);
+  const y = facilityNow().getFullYear() + 1;
+  await pickDate(page, { y, m: 9, d: 20 });
+  const text = await page.locator('.mo-chosen').innerText();
+  assert.match(text, /Selected move-out date:/);
+  assert.match(text, new RegExp(`September 20, ${y}`));
+  await page.locator('[data-next="n3"]').click();
+  assert.match(await page.locator('.mo-review').innerText(), new RegExp(`September 20, ${y}`),
+    'and it is what the review screen shows');
+  await ctx.close();
+});
+
+await test('a past date cannot be pushed through to submit', async () => {
+  const { page, ctx } = await fresh(browser);
+  await toDateScreen(page);
+  await pickDate(page, plus(30));
+  await page.locator('[data-next="n3"]').click();
+  // force the state back to a past date the way a tampered client would
+  await page.evaluate(() => { try { var k = 'wi64.moveout.v1'; var v = JSON.parse(sessionStorage.getItem(k) || '{}'); v.noticeDate = '1909-09-20'; sessionStorage.setItem(k, JSON.stringify(v)); } catch (e) {} });
+  await page.reload();
+  await page.waitForSelector('#moCard:not([hidden])');
+  const submit = page.locator('[data-submit="scheduled"]');
+  if (await submit.count()) {
+    await submit.click();
+    await page.waitForTimeout(600);
+    assert.equal(await page.locator('.mo-done-h').count(), 0, 'a past date must never reach the success screen');
+  }
+  await ctx.close();
+});
+
+await test('the idempotency key survives a reload, so a retry cannot double-book', async () => {
+  const { page, ctx } = await fresh(browser);
+  await toDateScreen(page);
+  await pickDate(page, plus(21));
+  const keyBefore = await page.evaluate(() =>
+    JSON.parse(sessionStorage.getItem('wi64.moveout.v1') || '{}').idempotencyKey);
+  assert.ok(keyBefore && keyBefore.length >= 16, 'a key is minted when the flow starts, not at submit');
+
+  await page.reload();
+  await page.waitForSelector('#moCard:not([hidden])');
+  const keyAfter = await page.evaluate(() =>
+    JSON.parse(sessionStorage.getItem('wi64.moveout.v1') || '{}').idempotencyKey);
+  assert.equal(keyAfter, keyBefore, 'the same key survives the reload');
+
+  // and it is the key actually sent to the server
+  await toDateScreen(page);
+  await pickDate(page, plus(21));
+  await page.locator('[data-next="n3"]').click();
+  const sent = [];
+  page.on('request', (r) => {
+    if (r.url().includes('/api/move-outs/scheduled')) {
+      try { sent.push(JSON.parse(r.postData()).idempotencyKey); } catch { /* ignore */ }
+    }
+  });
+  await page.locator('[data-submit="scheduled"]').click();
+  await page.waitForSelector('.mo-done-h', { timeout: 12000 });
+  assert.deepEqual(sent, [keyBefore], 'the submitted key is the persisted one');
+  await ctx.close();
+});
+
+await test('a stale photo upload response cannot overwrite a newer retake', async () => {
+  const { page, ctx } = await fresh(browser);
+
+  // hold the FIRST upload open; let every later one answer immediately
+  let held = null;
+  await page.route('**/api/photos', async (route) => {
+    if (!held) { held = route; return; }                       // first attempt: stall
+    await route.fulfill({ status: 201, contentType: 'application/json',
+      body: JSON.stringify({ ok: true, photoId: 'NEWPHOTO'.padEnd(20, 'x'), slot: 'INSIDE', bytes: 10 }) });
+  });
+
+  await page.locator('[data-go="o1"]').click();
+  await page.locator('#f-unit').fill('B12');
+  await page.locator('#f-phone2').fill('6515550100');
+  await page.locator('[data-next="o2"]').click();
+
+  await page.locator('[data-shot="0"]').click();               // attempt 1 — stalls
+  await setPhoto(page);
+  await page.waitForTimeout(400);
+  await page.locator('[data-shot="0"]').click();               // attempt 2 — the retake
+  await setPhoto(page);
+  await page.waitForFunction(() =>
+    document.querySelectorAll('.mo-slot')[0]?.classList.contains('done'), null, { timeout: 15000 });
+
+  const afterRetake = await page.evaluate(() =>
+    JSON.parse(sessionStorage.getItem('wi64.moveout.v1') || '{}').photos[0].photoId);
+  assert.equal(afterRetake, 'NEWPHOTOxxxxxxxxxxxx', 'the retake owns the slot');
+
+  // now let the stale first response land
+  await held.fulfill({ status: 201, contentType: 'application/json',
+    body: JSON.stringify({ ok: true, photoId: 'STALEPHOTO'.padEnd(20, 'y'), slot: 'INSIDE', bytes: 10 }) });
+  await page.waitForTimeout(900);
+
+  const afterStale = await page.evaluate(() =>
+    JSON.parse(sessionStorage.getItem('wi64.moveout.v1') || '{}').photos[0].photoId);
+  assert.equal(afterStale, 'NEWPHOTOxxxxxxxxxxxx', 'the older response was discarded');
+  assert.equal(await page.locator('.mo-slot.done').count(), 1, 'slot still reads as added');
   await ctx.close();
 });
 
@@ -308,6 +537,38 @@ async function assertNoClipping(page, label) {
   assert.ok(report.footerHeight > 0, `${label}: the action button has no height`);
   return report;
 }
+
+await test('three required plus three optional photos, and no seventh', async () => {
+  const { page, ctx } = await fresh(browser);
+  await page.locator('[data-go="o1"]').click();
+  await page.locator('#f-unit').fill('B12');
+  await page.locator('#f-phone2').fill('6515550100');
+  await page.locator('[data-next="o2"]').click();
+  await addPhoto(page, 0); await addPhoto(page, 1); await addPhoto(page, 2);
+
+  // the three required ones do not offer an "add another" until they are done
+  assert.equal(await page.locator('[data-extra]').count(), 1, 'add-another appears once the three are in');
+  assert.match(await page.locator('.mo-optional').innerText(), /3 of 6 photos added/);
+
+  for (let n = 4; n <= 6; n++) {
+    await page.locator('[data-extra]').click();
+    await setPhoto(page);
+    await page.waitForFunction((k) => document.querySelectorAll('.mo-ex img').length === k - 3, n, { timeout: 15000 });
+    await page.waitForTimeout(150);
+  }
+
+  assert.match(await page.locator('.mo-optional').innerText(), /6 of 6 photos added/, 'says 6 of 6');
+  assert.equal(await page.locator('[data-extra]').count(), 0, 'the add button is gone at six');
+  assert.equal(await page.locator('.mo-ex img').count(), 3, 'exactly three extras');
+  assert.equal(await page.locator('[data-next="o3"]').isDisabled(), false);
+
+  // removing one brings the add button back — the cap is a cap, not a dead end
+  await page.locator('[data-drop="0"]').click();
+  await page.waitForTimeout(250);
+  assert.match(await page.locator('.mo-optional').innerText(), /5 of 6 photos added/);
+  assert.equal(await page.locator('[data-extra]').count(), 1);
+  await ctx.close();
+});
 
 await test('long screens scroll instead of clipping, at 320px and 390px', async () => {
   for (const [name, viewport] of [['320px', IPHONE_SE], ['390px', IPHONE_14]]) {
