@@ -486,7 +486,7 @@
           '<div class="mo-stack">' +
             '<div><label class="mo-label" for="f-name">Name</label>' +
               '<input class="mo-input" id="f-name" data-bind="name" value="' + esc(S.name) + '" ' +
-              'placeholder="Scott Swenson" autocomplete="name" autocapitalize="words" enterkeyhint="next"></div>' +
+              'placeholder="Full Name" autocomplete="name" autocapitalize="words" enterkeyhint="next"></div>' +
             '<div><label class="mo-label" for="f-phone">Phone number</label>' +
               '<input class="mo-input" id="f-phone" data-bind="phone" data-tel="1" value="' + esc(S.phone) + '" ' +
               'placeholder="(651) 555-0100" inputmode="tel" autocomplete="tel" enterkeyhint="done">' +
