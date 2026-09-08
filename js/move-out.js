@@ -502,7 +502,7 @@
             '<button type="button" class="mo-tile" data-go="o1"><span class="ic">📸</span><span>' +
               '<b>I’ve Already Moved Out</b><small>It’s empty — send photos and close it</small></span></button>' +
           '</div>',
-        foot: '<p class="why">Questions? Call or text <a href="' + FACILITY_TEL + '" style="color:var(--green-main);font-weight:700;">' + FACILITY_PHONE + '</a></p>'
+        foot: '<p class="why">Questions? Call <a href="' + FACILITY_TEL + '" style="color:var(--green-main);font-weight:800;">' + FACILITY_PHONE + '</a></p>'
       };
     },
 
