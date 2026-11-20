@@ -132,6 +132,15 @@
     }
   }
 
+  function unwrapGroup(raw, groupId) {
+    if (!raw || typeof raw !== 'object') return null;
+    // Already a bare group object.
+    if (raw.available_units_count !== undefined || raw.size !== undefined) return raw;
+    if (raw[groupId]) return raw[groupId];
+    var keys = Object.keys(raw);
+    return keys.length === 1 ? raw[keys[0]] : null;
+  }
+
   // ── live load ─────────────────────────────────────────────────────────────
   var known = {};   // key -> { groupId, price } from the last good response
 
@@ -208,11 +217,19 @@
 
     fetch(GROUP_API(groupId), { headers: { Accept: 'application/json' } })
       .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (g) {
+      .then(function (raw) {
         clearTimeout(timer);
         if (done) return;
-        var stillFree = !g || Number(g.available_units_count) > 0;   // unreadable → fail open
-        if (stillFree) return go(g ? 'confirmed' : 'unverified');
+        // storEDGE returns BOTH endpoints as a map keyed by unit-group id:
+        //   { "<group id>": { ...group... } }
+        // Reading available_units_count off the wrapper yields undefined, so
+        // unwrap before testing it.
+        var g = unwrapGroup(raw, groupId);
+        var n = g ? Number(g.available_units_count) : NaN;
+        // Only block the click on a definite zero. Anything unreadable —
+        // missing field, bad shape, non-numeric — fails OPEN.
+        var stillFree = !isFinite(n) || n > 0;
+        if (stillFree) return go(isFinite(n) ? 'confirmed' : 'unverified');
 
         // It sold out while they were reading. Turn the card into a waitlist
         // card in place rather than dropping them into a checkout that fails.
