@@ -111,6 +111,102 @@
     ]
   }
   </script>
+  <style>
+  /* ── Hero ──────────────────────────────────────────────────────────────────
+     Shorter than the stock .hero so the rental selector reaches the first
+     screen on a 1366×768 laptop: the point of the page is choosing a unit, and
+     a visitor should see that inventory exists without scrolling. Type sizes
+     are untouched — only the air around them is reduced. */
+  .hero{padding:30px 0 34px}
+  .hero .eyebrow{margin-bottom:14px}
+  .hero h1{font-size:2.2rem;margin-bottom:10px}
+  .hero p.sub{font-size:1.04rem;max-width:660px;margin-bottom:18px}
+  #units{padding-top:14px;padding-bottom:26px}
+  .units-tail{padding-top:34px}
+  .avail-photo{margin-top:0}
+  #units .section-head{margin-bottom:10px}
+  #units .section-head h2{font-size:1.8rem}
+  #units .section-head h2{margin-bottom:4px}
+  #units .section-head p{font-size:.97rem}
+  @media (max-width:760px){
+    .hero{padding:34px 0 38px}
+    .hero h1{font-size:1.85rem}
+    .hero p.sub{font-size:1rem}
+  }
+
+  /* ── Homepage unit selector ────────────────────────────────────────────────
+     The homepage is the first step of the rental: pick a size here, land in
+     storEDGE with it already in the cart. Mobile-first — one card per row until
+     there is genuinely room for two. */
+  .avail-count{display:inline-block;margin-left:6px;font-weight:800;color:var(--green-main,#2e7d32)}
+  .trust-strip{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 20px;
+    margin:10px 0 12px;padding:6px 10px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    font-size:.86rem;color:var(--gray-dark,#33465a);font-weight:600}
+  .trust-strip li{white-space:nowrap}
+
+  .ucards{display:grid;grid-template-columns:1fr;gap:16px}
+  @media (min-width:700px){.ucards{grid-template-columns:repeat(2,1fr)}}
+  @media (min-width:1040px){.ucards{grid-template-columns:repeat(3,1fr)}}
+
+  .ucard{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);
+    border-radius:14px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.05);transition:box-shadow .15s,border-color .15s}
+  .ucard:hover{box-shadow:0 6px 22px rgba(0,0,0,.10);border-color:var(--blue)}
+  .ucard-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+  .ucard-kind{margin:0;font-size:.74rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gray)}
+  .ucard-size{margin:4px 0 2px;font-size:2rem;font-weight:800;line-height:1.05;letter-spacing:-.02em;color:var(--ink)}
+  .ucard-sqft{margin:0;font-size:.85rem;color:var(--gray)}
+  .ucard-pill{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;flex-shrink:0;
+    background:#e7f5e9;color:#1f5c23;font-size:.78rem;font-weight:800;padding:7px 12px;border-radius:999px}
+  .ucard-pill i{width:8px;height:8px;border-radius:50%;background:#2e7d32;display:block}
+  .ucard-pill--out{background:#fdecea;color:#8a2f25}
+  .ucard-price{margin:16px 0 0;line-height:1}
+  .ucard-price b{font-size:1.9rem;font-weight:800;color:var(--ink)}
+  .ucard-price span{font-size:.95rem;color:var(--gray);font-weight:600}
+  .ucard-fits{margin:10px 0 0;font-size:.92rem;color:var(--gray-dark,#33465a);line-height:1.45}
+  .ucard-cta{margin-top:auto;display:flex;align-items:center;justify-content:center;
+    min-height:52px;margin-top:18px;border-radius:9px;background:var(--green-main,#2e7d32);color:#fff;
+    font-weight:800;font-size:1rem;text-decoration:none;transition:background .15s}
+  .ucard-cta:hover{background:var(--green-dark,#1f5c23)}
+  .ucard-cta--wait{background:transparent;color:var(--blue);border:2px solid var(--blue)}
+  .ucard-note{margin:10px 0 0;font-size:.85rem;color:#8a2f25;line-height:1.45}
+  .ucard--gone{opacity:.85}
+
+  .avail-empty{text-align:center;color:var(--gray-dark,#33465a);font-weight:600;margin:18px 0 0}
+  .avail-photo{margin:30px 0 0}
+  .avail-photo img{width:100%;height:280px;object-fit:cover;border-radius:12px;display:block}
+  .avail-photo figcaption{margin-top:9px;font-size:.88rem;color:var(--gray);text-align:center}
+  .avail-help{text-align:center;margin:24px 0 0;font-size:.98rem}
+
+  .wait-head{margin:44px 0 4px;font-size:1.05rem;color:var(--gray-dark,#33465a);
+    font-weight:800;letter-spacing:.01em}
+  .wait-sub{margin:0 0 12px;color:var(--gray);font-size:.88rem}
+  #waitWrap{opacity:.92}
+  .wrows{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+  .wrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+    padding:13px 2px;border-bottom:1px solid var(--line)}
+  .wrow-size{font-weight:700;color:var(--gray-dark,#33465a);min-width:80px;font-size:.98rem}
+  .wrow-price{color:var(--gray);font-weight:600;font-size:.94rem}
+  .wrow-tag{font-size:.74rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    color:#8a5a06;background:#fbeee1;padding:4px 9px;border-radius:999px}
+  .wrow-cta{margin-left:auto;font-weight:700;font-size:.9rem;color:var(--gray-dark,#33465a);
+    text-decoration:none;background:transparent;border:1px solid var(--line);border-radius:8px;
+    padding:9px 14px;min-height:40px;display:flex;align-items:center}
+  .wrow-cta:hover{border-color:var(--blue)}
+  @media (max-width:400px){
+    .wrow{gap:8px}
+    .wrow-cta{margin-left:0;width:100%;justify-content:center}
+  }
+
+  /* Sticky mobile action — takes them to the selector, never past it. */
+  .mobar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:none;gap:10px;
+    padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line);
+    box-shadow:0 -2px 14px rgba(0,0,0,.08)}
+  .mobar a{flex:1;display:flex;align-items:center;justify-content:center;min-height:48px;
+    border-radius:9px;font-weight:800;text-decoration:none;font-size:.98rem}
+  .mobar .mobar-units{background:var(--green-main,#2e7d32);color:#fff}
+  .mobar .mobar-call{border:2px solid var(--blue);color:var(--blue)}
+  @media (max-width:760px){.mobar{display:flex}body{padding-bottom:76px}}
+  </style>
 </head>
 <body>
 
@@ -148,19 +244,123 @@
   <!-- Hero -->
   <section class="hero">
     <div class="container">
-      <span class="eyebrow">Gated &amp; Secure · Hackensack, MN</span>
-      <h1>Gated Storage Units &amp; Outdoor Parking in Hackensack, MN — the Heart of Lake Country</h1>
-      <p class="sub">Clean, secure storage for your boat, RV, camper, and gear — minutes from Birch Lake, Ten Mile Lake, and Leech Lake. Rent online in minutes, pay online 24/7.</p>
+      <span class="eyebrow">Gated Storage · 24/7 Access · Hackensack, MN</span>
+      <h1>Storage Units &amp; Boat/RV Parking in Hackensack, MN</h1>
+      <p class="sub">Choose an available unit below and rent online in minutes. Indoor storage plus gated outdoor boat, RV, camper and trailer parking in the heart of lake country — near Birch Lake, Ten Mile Lake and Leech Lake.</p>
       <div class="hero-ctas">
-        <a class="btn btn-primary" href="https://rental-center.storedge.com/?companyId=ef2375f3-b212-4670-bbc0-be544f6614b6&amp;facilityId=159d76bf-6636-4e86-87fe-82fc497dc971#/move-in">Rent Your Unit Now</a>
-        <a class="btn btn-outline" style="border-color:#fff;color:#fff !important;" href="#units">See Units &amp; Prices</a>
+        <a class="btn btn-primary" href="#available" data-scroll-avail>See Available Units ↓</a>
+        <a class="btn btn-outline" style="border-color:#fff;color:#fff !important;" href="tel:+12186755625" data-where="hero">Call (218) 675-5625</a>
       </div>
-      <div class="badges">
-        <span>🔒 Gated &amp; Fenced</span>
-        <span>🚤 Outdoor Boat &amp; RV Parking</span>
-        <span>🕐 24/7 Access</span>
-        <span>✨ Very Clean Units</span>
+    </div>
+  </section>
+
+
+  <!-- Available Now — live storEDGE inventory -->
+  <!-- id="units" preserves old links to pleasantlakestorage.com/#units;
+       #available still resolves, so existing CTAs keep working. -->
+  <section id="units">
+    <div class="container" id="available">
+      <div class="section-head">
+        <h2>Available Now</h2>
+        <p>Live availability from our rental system. Choose a size to start your rental.
+          <span class="avail-count" id="availCount">6 sizes available right now</span></p>
       </div>
+
+      <ul class="trust-strip">
+        <li>🔒 Gated &amp; fenced</li>
+        <li>🕐 24/7 access</li>
+        <li>💻 Rent online</li>
+        <li>✨ Clean, well-kept units</li>
+      </ul>
+
+      <div class="ucards" id="availGrid">
+            <article class="ucard" data-key="12x40" data-group="469f1ffc-c05f-4fd8-affe-2f7d58c400d9">
+              <div class="ucard-top">
+                <div>
+                  <p class="ucard-kind">Outdoor Boat &amp; RV Parking</p>
+                  <h3 class="ucard-size">12 × 40</h3>
+                  <p class="ucard-sqft">480 sq ft</p>
+                </div>
+                <span class="ucard-pill"><i></i>Available Now</span>
+              </div>
+              <p class="ucard-price"><b>$40</b><span>/month</span></p>
+              <p class="ucard-fits">Boats, pontoons, RVs, campers, trailers</p>
+              <a class="ucard-cta" href="https://rental-center.storedge.com/?companyId=ef2375f3-b212-4670-bbc0-be544f6614b6&amp;facilityId=159d76bf-6636-4e86-87fe-82fc497dc971&amp;utm_source=website&amp;utm_medium=referral&amp;utm_campaign=pleasantlakestorage&amp;utm_content=12x40#/move-in/159d76bf-6636-4e86-87fe-82fc497dc971/469f1ffc-c05f-4fd8-affe-2f7d58c400d9">Reserve This Space</a>
+              <p class="ucard-note" hidden></p>
+            </article>
+            <article class="ucard" data-key="10x11" data-group="65921b14-4b39-4549-a549-be02a57c546a">
+              <div class="ucard-top">
+                <div>
+                  <p class="ucard-kind">Indoor Storage</p>
+                  <h3 class="ucard-size">10 × 11</h3>
+                  <p class="ucard-sqft">110 sq ft</p>
+                </div>
+                <span class="ucard-pill"><i></i>Available Now</span>
+              </div>
+              <p class="ucard-price"><b>$75</b><span>/month</span></p>
+              <p class="ucard-fits">1-bedroom home, ATV, snowmobile</p>
+              <a class="ucard-cta" href="https://rental-center.storedge.com/?companyId=ef2375f3-b212-4670-bbc0-be544f6614b6&amp;facilityId=159d76bf-6636-4e86-87fe-82fc497dc971&amp;utm_source=website&amp;utm_medium=referral&amp;utm_campaign=pleasantlakestorage&amp;utm_content=10x11#/move-in/159d76bf-6636-4e86-87fe-82fc497dc971/65921b14-4b39-4549-a549-be02a57c546a">Rent This Unit</a>
+              <p class="ucard-note" hidden></p>
+            </article>
+            <article class="ucard" data-key="10x20" data-group="a69cce56-b03e-4cfc-af5e-8ad69f96c9e6">
+              <div class="ucard-top">
+                <div>
+                  <p class="ucard-kind">Indoor Storage</p>
+                  <h3 class="ucard-size">10 × 20</h3>
+                  <p class="ucard-sqft">200 sq ft</p>
+                </div>
+                <span class="ucard-pill"><i></i>Available Now</span>
+              </div>
+              <p class="ucard-price"><b>$100</b><span>/month</span></p>
+              <p class="ucard-fits">Boat &amp; trailer, car, 3-bedroom home</p>
+              <a class="ucard-cta" href="https://rental-center.storedge.com/?companyId=ef2375f3-b212-4670-bbc0-be544f6614b6&amp;facilityId=159d76bf-6636-4e86-87fe-82fc497dc971&amp;utm_source=website&amp;utm_medium=referral&amp;utm_campaign=pleasantlakestorage&amp;utm_content=10x20#/move-in/159d76bf-6636-4e86-87fe-82fc497dc971/a69cce56-b03e-4cfc-af5e-8ad69f96c9e6">Rent This Unit</a>
+              <p class="ucard-note" hidden></p>
+            </article>
+            <article class="ucard" data-key="10x22" data-group="31ea74e8-80f9-4eb1-aaab-db79eb98f6e1">
+              <div class="ucard-top">
+                <div>
+                  <p class="ucard-kind">Indoor Storage</p>
+                  <h3 class="ucard-size">10 × 22</h3>
+                  <p class="ucard-sqft">220 sq ft</p>
+                </div>
+                <span class="ucard-pill"><i></i>Available Now</span>
+              </div>
+              <p class="ucard-price"><b>$110</b><span>/month</span></p>
+              <p class="ucard-fits">Longer boats, vehicles, ice house</p>
+              <a class="ucard-cta" href="https://rental-center.storedge.com/?companyId=ef2375f3-b212-4670-bbc0-be544f6614b6&amp;facilityId=159d76bf-6636-4e86-87fe-82fc497dc971&amp;utm_source=website&amp;utm_medium=referral&amp;utm_campaign=pleasantlakestorage&amp;utm_content=10x22#/move-in/159d76bf-6636-4e86-87fe-82fc497dc971/31ea74e8-80f9-4eb1-aaab-db79eb98f6e1">Rent This Unit</a>
+              <p class="ucard-note" hidden></p>
+            </article>
+            <article class="ucard" data-key="11x20" data-group="925e8e8c-e9f8-45c0-bf01-3a193de6c90b">
+              <div class="ucard-top">
+                <div>
+                  <p class="ucard-kind">Indoor Storage</p>
+                  <h3 class="ucard-size">11 × 20</h3>
+                  <p class="ucard-sqft">220 sq ft</p>
+                </div>
+                <span class="ucard-pill"><i></i>Available Now</span>
+              </div>
+              <p class="ucard-price"><b>$110</b><span>/month</span></p>
+              <p class="ucard-fits">Boat &amp; trailer, vehicles, ice house</p>
+              <a class="ucard-cta" href="https://rental-center.storedge.com/?companyId=ef2375f3-b212-4670-bbc0-be544f6614b6&amp;facilityId=159d76bf-6636-4e86-87fe-82fc497dc971&amp;utm_source=website&amp;utm_medium=referral&amp;utm_campaign=pleasantlakestorage&amp;utm_content=11x20#/move-in/159d76bf-6636-4e86-87fe-82fc497dc971/925e8e8c-e9f8-45c0-bf01-3a193de6c90b">Rent This Unit</a>
+              <p class="ucard-note" hidden></p>
+            </article>
+            <article class="ucard" data-key="10x24" data-group="69ee70f4-7ead-40bf-ba30-0d2aeb195113">
+              <div class="ucard-top">
+                <div>
+                  <p class="ucard-kind">Indoor Storage</p>
+                  <h3 class="ucard-size">10 × 24</h3>
+                  <p class="ucard-sqft">240 sq ft</p>
+                </div>
+                <span class="ucard-pill"><i></i>Available Now</span>
+              </div>
+              <p class="ucard-price"><b>$120</b><span>/month</span></p>
+              <p class="ucard-fits">Pontoons, larger boats, full household</p>
+              <a class="ucard-cta" href="https://rental-center.storedge.com/?companyId=ef2375f3-b212-4670-bbc0-be544f6614b6&amp;facilityId=159d76bf-6636-4e86-87fe-82fc497dc971&amp;utm_source=website&amp;utm_medium=referral&amp;utm_campaign=pleasantlakestorage&amp;utm_content=10x24#/move-in/159d76bf-6636-4e86-87fe-82fc497dc971/69ee70f4-7ead-40bf-ba30-0d2aeb195113">Rent This Unit</a>
+              <p class="ucard-note" hidden></p>
+            </article>
+      </div>
+      <p class="avail-empty" id="availEmpty" hidden>Everything is rented at the moment — join the waitlist below and we'll call you the day a unit opens.</p>
+
     </div>
   </section>
 
@@ -171,109 +371,34 @@
     </div>
   </div>
 
-  <!-- Units & Prices -->
-  <section id="units">
+  <!-- Supporting content for the selector: proof, sizing help, waitlist. -->
+  <section class="units-tail">
     <div class="container">
-      <div class="section-head">
-        <h2>Units &amp; Prices</h2>
-        <p>Simple monthly pricing — no surprises. All units sit inside our gated, fenced facility with 24/7 access.</p>
+      <figure class="avail-photo">
+        <img src="images/facility-ground.jpg" loading="lazy"
+             alt="Pleasant Lake Storage entrance — gated and fenced, Hackensack MN">
+        <figcaption>Your unit sits inside this gated, fenced facility on County 45 NW.</figcaption>
+      </figure>
+
+      <p class="avail-help">Not sure which size you need? <a href="units-prices.html">View all unit sizes &amp; prices →</a></p>
+
+      <div id="waitWrap">
+        <h3 class="wait-head">Looking for a Different Size?</h3>
+        <p class="wait-sub">These are full today. Sizes open up regularly — get on the list and we'll call you first.</p>
+        <ul class="wrows" id="waitList">
+            <li class="wrow" data-key="8x11"><span class="wrow-size">8 × 11</span><span class="wrow-price">$65/mo</span><span class="wrow-tag">Waitlist</span><a class="wrow-cta" href="contact-us.html?size=8x11">Get Notified</a></li>
+            <li class="wrow" data-key="11x16"><span class="wrow-size">11 × 16</span><span class="wrow-price">$90/mo</span><span class="wrow-tag">Waitlist</span><a class="wrow-cta" href="contact-us.html?size=11x16">Get Notified</a></li>
+            <li class="wrow" data-key="11x18"><span class="wrow-size">11 × 18</span><span class="wrow-price">$100/mo</span><span class="wrow-tag">Waitlist</span><a class="wrow-cta" href="contact-us.html?size=11x18">Get Notified</a></li>
+            <li class="wrow" data-key="11x24"><span class="wrow-size">11 × 24</span><span class="wrow-price">$135/mo</span><span class="wrow-tag">Waitlist</span><a class="wrow-cta" href="contact-us.html?size=11x24">Get Notified</a></li>
+            <li class="wrow" data-key="11x26"><span class="wrow-size">11 × 26</span><span class="wrow-price">$140/mo</span><span class="wrow-tag">Waitlist</span><a class="wrow-cta" href="contact-us.html?size=11x26">Get Notified</a></li>
+            <li class="wrow" data-key="11x28"><span class="wrow-size">11 × 28</span><span class="wrow-price">$150/mo</span><span class="wrow-tag">Waitlist</span><a class="wrow-cta" href="contact-us.html?size=11x28">Get Notified</a></li>
+        </ul>
       </div>
-      <div class="units-table-wrap">
-        <table class="units">
-          <thead>
-            <tr><th>Unit Size</th><th>Best For</th><th>Monthly Rate</th><th>Status</th><th></th></tr>
-          </thead>
-          <tbody>
-            <tr class="row-avail" data-pl="12x40">
-              <td data-label="Unit Size"><a href="https://rental-center.storedge.com/?companyId=ef2375f3-b212-4670-bbc0-be544f6614b6&amp;facilityId=159d76bf-6636-4e86-87fe-82fc497dc971#/move-in" style="text-decoration:none;"><strong>12 x 40 Outdoor Parking</strong></a></td>
-              <td data-label="Best For">Boats, pontoons, RVs, campers, trailers <span style="color:var(--gray);white-space:nowrap;">· 480 sq ft</span></td>
-              <td class="price" data-label="Monthly Rate">$40</td>
-              <td data-label="Status"><span class="tag tag-avail">Available</span></td>
-              <td data-label="Action"><a class="btn btn-rent" href="https://rental-center.storedge.com/?companyId=ef2375f3-b212-4670-bbc0-be544f6614b6&amp;facilityId=159d76bf-6636-4e86-87fe-82fc497dc971#/move-in">Rent Now</a></td>
-            </tr>
-            <tr class="row-wait" data-pl="8x11">
-              <td data-label="Unit Size"><strong>8 x 11 x 8</strong></td>
-              <td data-label="Best For">Boxes, seasonal gear, small furniture <span style="color:var(--gray);white-space:nowrap;">· 88 sq ft</span></td>
-              <td class="price" data-label="Monthly Rate">$65</td>
-              <td data-label="Status"><span class="tag tag-wait">Waitlist</span></td>
-              <td data-label="Action"><a class="btn btn-wait" href="contact-us.html">Get Notified</a></td>
-            </tr>
-            <tr class="row-avail" data-pl="10x11">
-              <td data-label="Unit Size"><strong>10 x 11 x 8</strong></td>
-              <td data-label="Best For">1-bedroom home, ATV, snowmobile <span style="color:var(--gray);white-space:nowrap;">· 110 sq ft</span></td>
-              <td class="price" data-label="Monthly Rate">$75</td>
-              <td data-label="Status"><span class="tag tag-avail">Available</span></td>
-              <td data-label="Action"><a class="btn btn-rent" href="https://rental-center.storedge.com/?companyId=ef2375f3-b212-4670-bbc0-be544f6614b6&amp;facilityId=159d76bf-6636-4e86-87fe-82fc497dc971#/move-in">Rent Now</a></td>
-            </tr>
-            <tr class="row-wait" data-pl="11x16">
-              <td data-label="Unit Size"><strong>11 x 16 x 8</strong></td>
-              <td data-label="Best For">Small boat, side-by-side, 2-bedroom home <span style="color:var(--gray);white-space:nowrap;">· 176 sq ft</span></td>
-              <td class="price" data-label="Monthly Rate">$90</td>
-              <td data-label="Status"><span class="tag tag-wait">Waitlist</span></td>
-              <td data-label="Action"><a class="btn btn-wait" href="contact-us.html">Get Notified</a></td>
-            </tr>
-            <tr class="row-wait" data-pl="11x18">
-              <td data-label="Unit Size"><strong>11 x 18 x 8</strong></td>
-              <td data-label="Best For">Fishing boat &amp; trailer, household <span style="color:var(--gray);white-space:nowrap;">· 198 sq ft</span></td>
-              <td class="price" data-label="Monthly Rate">$100</td>
-              <td data-label="Status"><span class="tag tag-wait">Waitlist</span></td>
-              <td data-label="Action"><a class="btn btn-wait" href="contact-us.html">Get Notified</a></td>
-            </tr>
-            <tr class="row-avail" data-pl="10x20">
-              <td data-label="Unit Size"><strong>10 x 20 x 8</strong></td>
-              <td data-label="Best For">Boat &amp; trailer, car, 3-bedroom home <span style="color:var(--gray);white-space:nowrap;">· 200 sq ft</span></td>
-              <td class="price" data-label="Monthly Rate">$100</td>
-              <td data-label="Status"><span class="tag tag-avail">Available</span></td>
-              <td data-label="Action"><a class="btn btn-rent" href="https://rental-center.storedge.com/?companyId=ef2375f3-b212-4670-bbc0-be544f6614b6&amp;facilityId=159d76bf-6636-4e86-87fe-82fc497dc971#/move-in">Rent Now</a></td>
-            </tr>
-            <tr class="row-avail" data-pl="10x22">
-              <td data-label="Unit Size"><strong>10 x 22 x 8</strong></td>
-              <td data-label="Best For">Longer boats, vehicles, ice house <span style="color:var(--gray);white-space:nowrap;">· 220 sq ft</span></td>
-              <td class="price" data-label="Monthly Rate">$110</td>
-              <td data-label="Status"><span class="tag tag-avail">Available</span></td>
-              <td data-label="Action"><a class="btn btn-rent" href="https://rental-center.storedge.com/?companyId=ef2375f3-b212-4670-bbc0-be544f6614b6&amp;facilityId=159d76bf-6636-4e86-87fe-82fc497dc971#/move-in">Rent Now</a></td>
-            </tr>
-            <tr class="row-wait" data-pl="11x20">
-              <td data-label="Unit Size"><strong>11 x 20 x 8</strong></td>
-              <td data-label="Best For">Boat &amp; trailer, vehicles, ice house <span style="color:var(--gray);white-space:nowrap;">· 220 sq ft</span></td>
-              <td class="price" data-label="Monthly Rate">$110</td>
-              <td data-label="Status"><span class="tag tag-wait">Waitlist</span></td>
-              <td data-label="Action"><a class="btn btn-wait" href="contact-us.html">Get Notified</a></td>
-            </tr>
-            <tr class="row-avail" data-pl="10x24">
-              <td data-label="Unit Size"><strong>10 x 24 x 8</strong></td>
-              <td data-label="Best For">Pontoons, larger boats, full household <span style="color:var(--gray);white-space:nowrap;">· 240 sq ft</span></td>
-              <td class="price" data-label="Monthly Rate">$120</td>
-              <td data-label="Status"><span class="tag tag-avail">Available</span></td>
-              <td data-label="Action"><a class="btn btn-rent" href="https://rental-center.storedge.com/?companyId=ef2375f3-b212-4670-bbc0-be544f6614b6&amp;facilityId=159d76bf-6636-4e86-87fe-82fc497dc971#/move-in">Rent Now</a></td>
-            </tr>
-            <tr class="row-wait" data-pl="11x24">
-              <td data-label="Unit Size"><strong>11 x 24 x 8</strong></td>
-              <td data-label="Best For">Pontoons, campers, large loads <span style="color:var(--gray);white-space:nowrap;">· 264 sq ft</span></td>
-              <td class="price" data-label="Monthly Rate">$135</td>
-              <td data-label="Status"><span class="tag tag-wait">Waitlist</span></td>
-              <td data-label="Action"><a class="btn btn-wait" href="contact-us.html">Get Notified</a></td>
-            </tr>
-            <tr class="row-wait" data-pl="11x26">
-              <td data-label="Unit Size"><strong>11 x 26 x 8</strong></td>
-              <td data-label="Best For">Large pontoons, campers <span style="color:var(--gray);white-space:nowrap;">· 286 sq ft</span></td>
-              <td class="price" data-label="Monthly Rate">$140</td>
-              <td data-label="Status"><span class="tag tag-wait">Waitlist</span></td>
-              <td data-label="Action"><a class="btn btn-wait" href="contact-us.html">Get Notified</a></td>
-            </tr>
-            <tr class="row-wait" data-pl="11x28">
-              <td data-label="Unit Size"><strong>11 x 28 x 8</strong></td>
-              <td data-label="Best For">Largest boats, campers &amp; RVs <span style="color:var(--gray);white-space:nowrap;">· 308 sq ft</span></td>
-              <td class="price" data-label="Monthly Rate">$150</td>
-              <td data-label="Status"><span class="tag tag-wait">Waitlist</span></td>
-              <td data-label="Action"><a class="btn btn-wait" href="contact-us.html">Get Notified</a></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="units-note">A one-time $20 administrative fee applies at move-in. Unit availability changes often — waitlisted sizes open up regularly, so <a href="contact-us.html">contact us</a> to get on the list.</p>
+
+      <p class="units-note">A one-time $20 administrative fee applies at move-in.</p>
     </div>
   </section>
+
 
   <!-- Facility Photos -->
   <section>
@@ -478,6 +603,10 @@
     </div>
   </footer>
 
-  <script src="/js/availability.js" defer></script>
+  <nav class="mobar" aria-label="Quick actions">
+    <a class="mobar-units" href="#available" data-scroll-avail>View Available Units</a>
+    <a class="mobar-call" href="tel:+12186755625" data-where="mobile-bar">Call</a>
+  </nav>
+  <script src="js/rental-cards.js" defer></script>
 </body>
 </html>
